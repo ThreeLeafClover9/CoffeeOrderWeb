@@ -22,7 +22,6 @@ public class OrderController {
     @GetMapping("/{order-id}")
     public ResponseEntity getOrder(@PathVariable("order-id") long orderId) {
         System.out.println("orderId = " + orderId);
-
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -30,7 +29,6 @@ public class OrderController {
     @GetMapping
     public ResponseEntity getOrders() {
         System.out.println("get Orders");
-
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
     }
