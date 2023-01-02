@@ -4,21 +4,37 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/members")
 public class MemberController {
+    private final Map<Long, Map<String, Object>> members = new HashMap<>();
+    long memberId = 1L;
+
+    @PostConstruct
+    public void init() {
+        Map<String, Object> member = new HashMap<>();
+        member.put("memberId", memberId);
+        member.put("email", "hgd@gmail.com");
+        member.put("name", "홍길동");
+        member.put("phone", "010-1234-5678");
+        members.put(memberId, member);
+    }
+
     @PostMapping
     public ResponseEntity postMember(@RequestParam("email") String email,
                                      @RequestParam("name") String name,
                                      @RequestParam("phone") String phone) {
-        Map<String, String> map = new HashMap<>();
-        map.put("email", email);
-        map.put("name", name);
-        map.put("phone", phone);
-        return new ResponseEntity<>(map, HttpStatus.CREATED);
+        Map<String, Object> member = new HashMap<>();
+        member.put("memberId", ++memberId);
+        member.put("email", email);
+        member.put("name", name);
+        member.put("phone", phone);
+        members.put(memberId, member);
+        return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
 
     @GetMapping("/{member-id}")

@@ -4,21 +4,37 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/coffees")
 public class CoffeeController {
+    private final Map<Long, Map<String, Object>> coffees = new HashMap<>();
+    long coffeeId = 1;
+
+    @PostConstruct
+    public void init() {
+        Map<String, Object> coffee = new HashMap<>();
+        coffee.put("coffeeId", coffeeId);
+        coffee.put("korName", "바닐라 라떼");
+        coffee.put("engName", "Vanilla Latte");
+        coffee.put("price", 4500);
+        coffees.put(coffeeId, coffee);
+    }
+
     @PostMapping
-    public ResponseEntity postCoffee(@RequestParam("engName") String engName,
-                                     @RequestParam("korName") String korName,
+    public ResponseEntity postCoffee(@RequestParam("korName") String korName,
+                                     @RequestParam("engName") String engName,
                                      @RequestParam("price") int price) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("engName", engName);
-        map.put("korName", korName);
-        map.put("price", price);
-        return new ResponseEntity<>(map, HttpStatus.CREATED);
+        Map<String, Object> coffee = new HashMap<>();
+        coffee.put("coffeeId", ++coffeeId);
+        coffee.put("korName", korName);
+        coffee.put("engName", engName);
+        coffee.put("price", price);
+        coffees.put(coffeeId, coffee);
+        return new ResponseEntity<>(coffee, HttpStatus.CREATED);
     }
 
     @GetMapping("/{coffee-id}")
