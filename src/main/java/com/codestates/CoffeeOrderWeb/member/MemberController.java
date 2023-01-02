@@ -37,6 +37,15 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
+                                      @RequestParam("phone") String phone) {
+        Map<String, Object> member = members.get(memberId);
+        member.put("phone", phone);
+        members.put(memberId, member);
+        return new ResponseEntity<>(member, HttpStatus.OK);
+    }
+
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") long memberId) {
         System.out.println("memberId = " + memberId);
@@ -51,5 +60,11 @@ public class MemberController {
 
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{member-id}")
+    public ResponseEntity deleteMember(@PathVariable("member-id") long memberId) {
+        members.remove(memberId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

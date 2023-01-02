@@ -37,6 +37,17 @@ public class CoffeeController {
         return new ResponseEntity<>(coffee, HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{coffee-id}")
+    public ResponseEntity patchCoffee(@PathVariable("coffee-id") long coffeeId,
+                                      @RequestParam("korName") String korName,
+                                      @RequestParam("price") String price) {
+        Map<String, Object> coffee = coffees.get(coffeeId);
+        coffee.put("korName", korName);
+        coffee.put("price", price);
+        coffees.put(coffeeId, coffee);
+        return new ResponseEntity<>(coffee, HttpStatus.OK);
+    }
+
     @GetMapping("/{coffee-id}")
     public ResponseEntity getCoffee(@PathVariable("coffee-id") long coffeeId) {
         System.out.println("coffeeId = " + coffeeId);
@@ -51,5 +62,11 @@ public class CoffeeController {
 
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{coffee-id}")
+    public ResponseEntity deleteCoffee(@PathVariable("coffee-id") long coffeeId) {
+        coffees.remove(coffeeId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
