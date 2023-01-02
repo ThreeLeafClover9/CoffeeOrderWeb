@@ -12,7 +12,7 @@ import java.util.Map;
 @RequestMapping("/v1/coffees")
 public class CoffeeController {
     private final Map<Long, Map<String, Object>> coffees = new HashMap<>();
-    long coffeeId = 1;
+    long coffeeId = 1L;
 
     @PostConstruct
     public void init() {
