@@ -4,33 +4,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/v1/coffees")
 public class CoffeeController {
     @PostMapping
-    public ResponseEntity postCoffee(@RequestParam("korName") String korName,
-                                     @RequestParam("engName") String engName,
-                                     @RequestParam("price") int price) {
-        Map<String, Object> coffee = new HashMap<>();
-        coffee.put("korName", korName);
-        coffee.put("engName", engName);
-        coffee.put("price", price);
-        return new ResponseEntity<>(coffee, HttpStatus.CREATED);
+    public ResponseEntity postCoffee(@RequestBody CoffeePostDto coffeePostDto) {
+        return new ResponseEntity<>(coffeePostDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{coffee-id}")
     public ResponseEntity patchCoffee(@PathVariable("coffee-id") long coffeeId,
-                                      @RequestParam("korName") String korName,
-                                      @RequestParam("price") String price) {
-        Map<String, Object> coffee = new HashMap<>();
-        coffee.put("coffeeId", coffeeId);
-        coffee.put("korName", korName);
-        coffee.put("engName", "Vanilla Latte");
-        coffee.put("price", price);
-        return new ResponseEntity<>(coffee, HttpStatus.OK);
+                                      @RequestBody CoffeePatchDto coffeePatchDto) {
+        coffeePatchDto.setCoffeeId(coffeeId);
+        coffeePatchDto.setKorName("바닐라 라떼");
+        coffeePatchDto.setEngName("Vanilla Latte");
+        return new ResponseEntity<>(coffeePatchDto, HttpStatus.OK);
     }
 
     @GetMapping("/{coffee-id}")
