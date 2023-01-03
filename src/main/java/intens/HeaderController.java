@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.intens;
+package intens;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

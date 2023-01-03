@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 public class MemberPostDto {
     @NotBlank
     @Email
-    @org.hibernate.validator.constraints.Email
     private String email;
     @NotBlank(message = "이름은 공백이 아니어야 합니다.")
     private String name;

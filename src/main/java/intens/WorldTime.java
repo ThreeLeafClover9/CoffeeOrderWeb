@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.intens;
+package intens;
 
 import lombok.Getter;
 import lombok.ToString;
