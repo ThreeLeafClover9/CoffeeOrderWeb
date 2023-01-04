@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/v1/members")
@@ -18,14 +18,14 @@ public class MemberController {
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") @Min(1) long memberId,
+    public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
                                       @Valid @RequestBody MemberPatchDto memberPatchDto) {
         memberPatchDto.setMemberId(memberId);
         return new ResponseEntity<>(memberPatchDto, HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") @Min(1) long memberId) {
+    public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId) {
         System.out.println("memberId = " + memberId);
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
@@ -39,7 +39,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") @Min(1) long memberId) {
+    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId) {
         System.out.println("memberId = " + memberId);
         // No need business logic
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
