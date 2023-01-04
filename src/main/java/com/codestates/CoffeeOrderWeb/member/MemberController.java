@@ -25,7 +25,7 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") long memberId) {
+    public ResponseEntity getMember(@PathVariable("member-id") @Min(1) long memberId) {
         System.out.println("memberId = " + memberId);
         // not implementation
         return new ResponseEntity<>(HttpStatus.OK);
@@ -39,7 +39,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") long memberId) {
+    public ResponseEntity deleteMember(@PathVariable("member-id") @Min(1) long memberId) {
+        System.out.println("memberId = " + memberId);
         // No need business logic
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
