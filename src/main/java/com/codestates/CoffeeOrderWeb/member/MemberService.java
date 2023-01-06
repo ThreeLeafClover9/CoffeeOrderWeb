@@ -8,11 +8,13 @@ import java.util.List;
 public class MemberService {
     public Member createMember(Member member) {
         Member createdMember = member;
+        createdMember.setMemberId(1);
         return createdMember;
     }
 
     public Member updateMember(Member member) {
         Member updatedMember = member;
+        updatedMember.setEmail("hgd@gmail.com");
         return updatedMember;
     }
 
