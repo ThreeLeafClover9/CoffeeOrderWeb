@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.member;
+package com.codestates.CoffeeOrderWeb.member.dto;
 
 import com.codestates.CoffeeOrderWeb.validator.NotSpace;
 import lombok.Getter;

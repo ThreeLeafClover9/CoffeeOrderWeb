@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.order;
+package com.codestates.CoffeeOrderWeb.order.dto;
 
 import lombok.Getter;
 

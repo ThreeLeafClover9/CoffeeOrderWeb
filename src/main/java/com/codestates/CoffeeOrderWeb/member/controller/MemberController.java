@@ -1,5 +1,11 @@
-package com.codestates.CoffeeOrderWeb.member;
+package com.codestates.CoffeeOrderWeb.member.controller;
 
+import com.codestates.CoffeeOrderWeb.member.dto.MemberPatchDto;
+import com.codestates.CoffeeOrderWeb.member.dto.MemberPostDto;
+import com.codestates.CoffeeOrderWeb.member.dto.MemberResponseDto;
+import com.codestates.CoffeeOrderWeb.member.entity.Member;
+import com.codestates.CoffeeOrderWeb.member.mapper.MemberMapper;
+import com.codestates.CoffeeOrderWeb.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

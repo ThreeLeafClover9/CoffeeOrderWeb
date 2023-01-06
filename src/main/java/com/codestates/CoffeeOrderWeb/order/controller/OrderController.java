@@ -1,5 +1,6 @@
-package com.codestates.CoffeeOrderWeb.order;
+package com.codestates.CoffeeOrderWeb.order.controller;
 
+import com.codestates.CoffeeOrderWeb.order.dto.OrderPostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

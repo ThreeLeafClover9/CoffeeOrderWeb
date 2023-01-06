@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.coffee;
+package com.codestates.CoffeeOrderWeb.coffee.dto;
 
 import lombok.Getter;
 import org.hibernate.validator.constraints.Range;
