@@ -1,13 +1,15 @@
 package com.codestates.CoffeeOrderWeb.member.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class MemberResponseDto {
     private long memberId;
     private String email;
     private String name;
     private String phone;
 }
+
+

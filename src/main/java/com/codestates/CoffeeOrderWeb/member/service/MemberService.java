@@ -9,7 +9,7 @@ import java.util.List;
 public class MemberService {
     public Member createMember(Member member) {
         Member createdMember = member;
-        createdMember.setMemberId(1);
+        createdMember.setMemberId(1L);
         return createdMember;
     }
 
@@ -26,8 +26,8 @@ public class MemberService {
 
     public List<Member> findMembers() {
         List<Member> foundMembers = List.of(
-                new Member(1, "hgd@gmail.com", "홍길동", "010-1234-5678"),
-                new Member(2, "lml@gmail.com", "이몽룡", "010-1111-2222")
+                new Member(1L, "hgd@gmail.com", "홍길동", "010-1234-5678"),
+                new Member(2L, "lml@gmail.com", "이몽룡", "010-1111-2222")
         );
         return foundMembers;
     }

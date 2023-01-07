@@ -1,4 +1,4 @@
-package com.codestates.CoffeeOrderWeb.member.entity;
+package com.codestates.CoffeeOrderWeb.order.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Order {
+    private long orderId;
     private long memberId;
-    private String email;
-    private String name;
-    private String phone;
+    private long coffeeId;
 }
