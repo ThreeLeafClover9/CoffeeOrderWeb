@@ -12,7 +12,7 @@ public class CoffeePostDto {
     private String korName;
     @NotBlank
     @Pattern(regexp = "^([A-Za-z])(\\s?[A-Za-z])*$",
-            message = "커피명(영문)은 영문이어야 합니다.")
+            message = "커피명(영문)은 영문이어야 합니다.(단어 사이 공백 한 칸 포함)")
     private String engName;
     @Range(min = 100, max = 50000)
     private int price;
