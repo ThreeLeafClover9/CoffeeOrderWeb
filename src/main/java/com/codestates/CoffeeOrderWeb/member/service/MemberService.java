@@ -1,5 +1,7 @@
 package com.codestates.CoffeeOrderWeb.member.service;
 
+import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
+import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import com.codestates.CoffeeOrderWeb.member.entity.Member;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,9 @@ public class MemberService {
     }
 
     public Member findMember(long memberId) {
-        Member foundMember = new Member(memberId, "hgd@gmail.com", "홍길동", "010-1234-5678");
-        return foundMember;
+//        Member foundMember = new Member(memberId, "hgd@gmail.com", "홍길동", "010-1234-5678");
+//        return foundMember;
+        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
     }
 
     public List<Member> findMembers() {

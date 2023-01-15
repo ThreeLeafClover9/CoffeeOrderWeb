@@ -1,7 +1,10 @@
 package com.codestates.CoffeeOrderWeb.advice;
 
+import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
 import com.codestates.CoffeeOrderWeb.exception.ErrorResponse;
+import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,5 +29,11 @@ public class GlobalExceptionAdvice {
     public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         return ErrorResponse.of(constraintViolations);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
+        ExceptionCode exceptionCode = e.getExceptionCode();
+        return new ResponseEntity<>(exceptionCode.getMessage(), HttpStatus.valueOf(exceptionCode.getStatus()));
     }
 }
