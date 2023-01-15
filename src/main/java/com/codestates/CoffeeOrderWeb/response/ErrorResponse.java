@@ -1,8 +1,10 @@
-package com.codestates.CoffeeOrderWeb.exception;
+package com.codestates.CoffeeOrderWeb.response;
 
+import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.ConstraintViolation;
@@ -11,10 +13,29 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorResponse {
+    private Integer status;
+    private String message;
     private List<FieldError> fieldErrors;
     private List<ConstraintViolationError> constraintViolationErrors;
+
+    private ErrorResponse(Integer status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    private ErrorResponse(List<FieldError> fieldErrors, List<ConstraintViolationError> constraintViolationErrors) {
+        this.fieldErrors = fieldErrors;
+        this.constraintViolationErrors = constraintViolationErrors;
+    }
+
+    public static ErrorResponse of(ExceptionCode exceptionCode) {
+        return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
+    }
+
+    public static ErrorResponse of(HttpStatus httpStatus) {
+        return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
+    }
 
     public static ErrorResponse of(BindingResult bindingResult) {
         return new ErrorResponse(FieldError.of(bindingResult), null);

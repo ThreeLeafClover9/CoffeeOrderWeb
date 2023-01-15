@@ -36,6 +36,6 @@ public class MemberService {
     }
 
     public void deleteMember(long memberId) {
-
+        throw new NullPointerException();
     }
 }
