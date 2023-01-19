@@ -1,4 +1,4 @@
-package intens;
+package test.intens;
 
 import lombok.Getter;
 import lombok.ToString;
