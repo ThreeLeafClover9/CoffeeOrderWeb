@@ -3,39 +3,52 @@ package com.codestates.CoffeeOrderWeb.member.service;
 import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
 import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import com.codestates.CoffeeOrderWeb.member.entity.Member;
+import com.codestates.CoffeeOrderWeb.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
+    private final MemberRepository memberRepository;
+
     public Member createMember(Member member) {
-        Member createdMember = member;
-        createdMember.setMemberId(1L);
-        return createdMember;
+        verifyExistsEmail(member.getEmail());
+        return memberRepository.save(member);
     }
 
     public Member updateMember(Member member) {
-        Member updatedMember = member;
-        updatedMember.setEmail("hgd@gmail.com");
-        return updatedMember;
+        Member foundMember = findVerifiedMember(member.getMemberId());
+        Optional.ofNullable(member.getName()).ifPresent(foundMember::setName);
+        Optional.ofNullable(member.getPhone()).ifPresent(foundMember::setPhone);
+        return memberRepository.save(foundMember);
     }
 
     public Member findMember(long memberId) {
-//        Member foundMember = new Member(memberId, "hgd@gmail.com", "홍길동", "010-1234-5678");
-//        return foundMember;
-        throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        return findVerifiedMember(memberId);
     }
 
     public List<Member> findMembers() {
-        List<Member> foundMembers = List.of(
-                new Member(1L, "hgd@gmail.com", "홍길동", "010-1234-5678"),
-                new Member(2L, "lml@gmail.com", "이몽룡", "010-1111-2222")
-        );
-        return foundMembers;
+        return memberRepository.findAll();
     }
 
     public void deleteMember(long memberId) {
-        throw new NullPointerException();
+        Member foundMember = findVerifiedMember(memberId);
+        memberRepository.delete(foundMember);
+    }
+
+    private void verifyExistsEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+        }
+    }
+
+    public Member findVerifiedMember(long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }
