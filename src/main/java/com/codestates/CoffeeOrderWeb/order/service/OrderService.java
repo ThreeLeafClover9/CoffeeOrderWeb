@@ -5,7 +5,6 @@ import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
 import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import com.codestates.CoffeeOrderWeb.member.service.MemberService;
 import com.codestates.CoffeeOrderWeb.order.entity.Order;
-import com.codestates.CoffeeOrderWeb.order.mapper.OrderMapper;
 import com.codestates.CoffeeOrderWeb.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +18,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberService memberService;
     private final CoffeeService coffeeService;
-    private final OrderMapper orderMapper;
 
     public Order createOrder(Order order) {
-        memberService.findVerifiedMember(order.getMemberId().getId());
+        memberService.findMember(order.getMemberId().getId());
         order.getOrderCoffees()
                 .stream()
-                .forEach(coffeeRef -> coffeeService.findVerifiedCoffee(coffeeRef.getCoffeeId()));
+                .forEach(coffeeRef -> coffeeService.findCoffee(coffeeRef.getCoffeeId()));
         return orderRepository.save(order);
     }
 

@@ -4,13 +4,11 @@ import com.codestates.CoffeeOrderWeb.coffee.entity.Coffee;
 import com.codestates.CoffeeOrderWeb.coffee.repository.CoffeeRepository;
 import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
 import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
-import com.codestates.CoffeeOrderWeb.order.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,13 +34,6 @@ public class CoffeeService {
         return findVerifiedCoffee(coffeeId);
     }
 
-    public List<Coffee> findOrderedCoffee(Order order) {
-        return order.getOrderCoffees()
-                .stream()
-                .map(coffeeRef -> findVerifiedCoffee(coffeeRef.getCoffeeId()))
-                .collect(Collectors.toList());
-    }
-
     public List<Coffee> findCoffees() {
         return coffeeRepository.findAll();
     }
@@ -59,7 +50,7 @@ public class CoffeeService {
         }
     }
 
-    public Coffee findVerifiedCoffee(long coffeeId) {
+    private Coffee findVerifiedCoffee(long coffeeId) {
         Optional<Coffee> optionalCoffee = coffeeRepository.findById(coffeeId);
         return optionalCoffee.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COFFEE_NOT_FOUND));
     }
