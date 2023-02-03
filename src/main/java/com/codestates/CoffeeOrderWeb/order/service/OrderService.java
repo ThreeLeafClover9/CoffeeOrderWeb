@@ -7,9 +7,11 @@ import com.codestates.CoffeeOrderWeb.member.service.MemberService;
 import com.codestates.CoffeeOrderWeb.order.entity.Order;
 import com.codestates.CoffeeOrderWeb.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +22,8 @@ public class OrderService {
     private final CoffeeService coffeeService;
 
     public Order createOrder(Order order) {
-        memberService.findMember(order.getMemberId().getId());
+        Long memberId = order.getMemberId().getId();
+        memberService.findMember(memberId);
         order.getOrderCoffees()
                 .stream()
                 .forEach(coffeeRef -> coffeeService.findCoffee(coffeeRef.getCoffeeId()));
@@ -31,8 +34,9 @@ public class OrderService {
         return findVerifiedOrder(orderId);
     }
 
-    public List<Order> findOrders() {
-        return orderRepository.findAll();
+    public Page<Order> findOrders(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("orderId").descending());
+        return orderRepository.findAll(pageRequest);
     }
 
     public void cancelOrder(long orderId) {

@@ -6,12 +6,15 @@ import com.codestates.CoffeeOrderWeb.coffee.dto.CoffeeResponseDto;
 import com.codestates.CoffeeOrderWeb.coffee.entity.Coffee;
 import com.codestates.CoffeeOrderWeb.coffee.mapper.CoffeeMapper;
 import com.codestates.CoffeeOrderWeb.coffee.service.CoffeeService;
+import com.codestates.CoffeeOrderWeb.response.MultiResponseDto;
+import com.codestates.CoffeeOrderWeb.response.SingleResponseDto;
+import com.codestates.CoffeeOrderWeb.utils.UriCreator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -23,6 +26,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class CoffeeController {
+    private final static String COFFEE_DEFAULT_PATH = "/v1/coffees";
     private final CoffeeService coffeeService;
     private final CoffeeMapper coffeeMapper;
 
@@ -30,11 +34,7 @@ public class CoffeeController {
     public ResponseEntity postCoffee(@Valid @RequestBody CoffeePostDto coffeePostDto) {
         Coffee coffee = coffeeMapper.coffeePostDtoToCoffee(coffeePostDto);
         Coffee createdCoffee = coffeeService.createCoffee(coffee);
-        URI location = UriComponentsBuilder
-                .fromPath("/v1/coffees")
-                .path("/{coffee-id}")
-                .buildAndExpand(createdCoffee.getCoffeeId())
-                .toUri();
+        URI location = UriCreator.createUri(COFFEE_DEFAULT_PATH, createdCoffee.getCoffeeId());
         return ResponseEntity.created(location).build();
     }
 
@@ -45,21 +45,26 @@ public class CoffeeController {
         Coffee coffee = coffeeMapper.coffeePatchDtoToCoffee(coffeePatchDto);
         Coffee updatedCoffee = coffeeService.updateCoffee(coffee);
         CoffeeResponseDto coffeeResponseDto = coffeeMapper.coffeeToCoffeeResponseDto(updatedCoffee);
-        return new ResponseEntity<>(coffeeResponseDto, HttpStatus.OK);
+        SingleResponseDto<CoffeeResponseDto> singleResponseDto = new SingleResponseDto<>(coffeeResponseDto);
+        return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/{coffee-id}")
     public ResponseEntity getCoffee(@PathVariable("coffee-id") @Positive long coffeeId) {
         Coffee foundCoffee = coffeeService.findCoffee(coffeeId);
         CoffeeResponseDto coffeeResponseDto = coffeeMapper.coffeeToCoffeeResponseDto(foundCoffee);
-        return new ResponseEntity<>(coffeeResponseDto, HttpStatus.OK);
+        SingleResponseDto<CoffeeResponseDto> singleResponseDto = new SingleResponseDto<>(coffeeResponseDto);
+        return new ResponseEntity<>(singleResponseDto, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity getCoffees() {
-        List<Coffee> foundCoffees = coffeeService.findCoffees();
+    public ResponseEntity getCoffees(@RequestParam @Positive int page,
+                                     @RequestParam @Positive int size) {
+        Page<Coffee> foundCoffeePage = coffeeService.findCoffees(page, size);
+        List<Coffee> foundCoffees = foundCoffeePage.getContent();
         List<CoffeeResponseDto> coffeeResponseDtos = coffeeMapper.coffeesToCoffeeResponseDtos(foundCoffees);
-        return new ResponseEntity<>(coffeeResponseDtos, HttpStatus.OK);
+        MultiResponseDto<CoffeeResponseDto> multiResponseDto = new MultiResponseDto<>(coffeeResponseDtos, foundCoffeePage);
+        return new ResponseEntity<>(multiResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{coffee-id}")

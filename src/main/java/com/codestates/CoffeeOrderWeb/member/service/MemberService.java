@@ -5,9 +5,11 @@ import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import com.codestates.CoffeeOrderWeb.member.entity.Member;
 import com.codestates.CoffeeOrderWeb.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,12 +18,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member createMember(Member member) {
-        verifyExistsEmail(member.getEmail());
+        String email = member.getEmail();
+        verifyExistsEmail(email);
         return memberRepository.save(member);
     }
 
     public Member updateMember(Member member) {
-        Member foundMember = findVerifiedMember(member.getMemberId());
+        long memberId = member.getMemberId();
+        Member foundMember = findVerifiedMember(memberId);
         Optional.ofNullable(member.getName()).ifPresent(foundMember::setName);
         Optional.ofNullable(member.getPhone()).ifPresent(foundMember::setPhone);
         return memberRepository.save(foundMember);
@@ -31,8 +35,9 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
+    public Page<Member> findMembers(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("memberId").descending());
+        return memberRepository.findAll(pageRequest);
     }
 
     public void deleteMember(long memberId) {

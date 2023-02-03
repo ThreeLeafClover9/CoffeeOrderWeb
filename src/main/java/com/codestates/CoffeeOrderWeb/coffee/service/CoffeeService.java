@@ -5,9 +5,11 @@ import com.codestates.CoffeeOrderWeb.coffee.repository.CoffeeRepository;
 import com.codestates.CoffeeOrderWeb.exception.BusinessLogicException;
 import com.codestates.CoffeeOrderWeb.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +25,8 @@ public class CoffeeService {
     }
 
     public Coffee updateCoffee(Coffee coffee) {
-        Coffee foundCoffee = findVerifiedCoffee(coffee.getCoffeeId());
+        long coffeeId = coffee.getCoffeeId();
+        Coffee foundCoffee = findVerifiedCoffee(coffeeId);
         Optional.ofNullable(coffee.getKorName()).ifPresent(foundCoffee::setKorName);
         Optional.ofNullable(coffee.getEngName()).ifPresent(foundCoffee::setEngName);
         Optional.ofNullable(coffee.getPrice()).ifPresent(foundCoffee::setPrice);
@@ -34,8 +37,9 @@ public class CoffeeService {
         return findVerifiedCoffee(coffeeId);
     }
 
-    public List<Coffee> findCoffees() {
-        return coffeeRepository.findAll();
+    public Page<Coffee> findCoffees(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by("coffeeId").descending());
+        return coffeeRepository.findAll(pageRequest);
     }
 
     public void deleteCoffee(long coffeeId) {
