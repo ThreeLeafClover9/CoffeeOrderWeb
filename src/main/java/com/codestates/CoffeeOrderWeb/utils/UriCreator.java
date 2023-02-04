@@ -7,7 +7,7 @@ import java.net.URI;
 public class UriCreator {
     public static URI createUri(String resourceDefaultPath, long resourceId) {
         return UriComponentsBuilder
-                .fromOriginHeader(resourceDefaultPath)
+                .fromPath(resourceDefaultPath)
                 .path("/{resource-id}")
                 .buildAndExpand(resourceId)
                 .toUri();
