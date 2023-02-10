@@ -1,4 +1,4 @@
-package test.intens;
+package test.rest_client;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

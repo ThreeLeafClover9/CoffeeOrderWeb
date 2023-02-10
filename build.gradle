@@ -28,6 +28,8 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
 	// Spring Data JDBC
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	// Spring Data JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.projectlombok:lombok'
 	// H2
 	runtimeOnly 'com.h2database:h2'

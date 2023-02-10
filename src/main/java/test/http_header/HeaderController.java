@@ -1,4 +1,4 @@
-package test.intens;
+package test.http_header;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

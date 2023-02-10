@@ -1,4 +1,4 @@
-package test.hello_world;
+package test.spring_data_jdbc;
 
 import lombok.Getter;
 import lombok.Setter;
