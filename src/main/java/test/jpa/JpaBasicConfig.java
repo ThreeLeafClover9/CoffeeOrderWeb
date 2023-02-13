@@ -19,44 +19,20 @@ public class JpaBasicConfig {
         this.entityTransaction = entityManager.getTransaction();
 
         return args -> {
-            example05();
+//            testDelete();
         };
     }
 
-    private void example05() {
-        entityTransaction.begin();
+    private void testPersistenceContext() {
         Member member = new Member("hgd@gmail.com");
         entityManager.persist(member);
-        entityTransaction.commit();
 
-        entityTransaction.begin();
         Member foundMember = entityManager.find(Member.class, 1L);
-        entityManager.remove(foundMember);
-        entityTransaction.commit();
+        System.out.println("getMemberId = " + foundMember.getMemberId());
+        System.out.println("getEmail = " + foundMember.getEmail());
     }
 
-    private void example04() {
-        entityTransaction.begin();
-        Member member = new Member("hgd@gmail.com");
-        entityManager.persist(member);
-        entityTransaction.commit();
-
-        entityTransaction.begin();
-        Member foundMember = entityManager.find(Member.class, 1L);
-        foundMember.setEmail("hgd@yahoo.co.kr");
-        entityTransaction.commit();
-    }
-
-    private void example03() {
-        entityTransaction.begin();
-        Member member1 = new Member("hgd1@gmail.com");
-        Member member2 = new Member("hgd2@gmail.com");
-        entityManager.persist(member1);
-        entityManager.persist(member2);
-        entityTransaction.commit();
-    }
-
-    private void example02() {
+    private void testPersistenceContextAndTable() {
         entityTransaction.begin();
         Member member = new Member("hgd@gmail.com");
         entityManager.persist(member);
@@ -70,12 +46,36 @@ public class JpaBasicConfig {
         System.out.println(foundMember2);
     }
 
-    private void example01() {
+    private void testWriteBehind() {
+        entityTransaction.begin();
+        Member member1 = new Member("hgd1@gmail.com");
+        Member member2 = new Member("hgd2@gmail.com");
+        entityManager.persist(member1);
+        entityManager.persist(member2);
+        entityTransaction.commit();
+    }
+
+    private void testUpdate() {
+        entityTransaction.begin();
         Member member = new Member("hgd@gmail.com");
         entityManager.persist(member);
+        entityTransaction.commit();
 
+        entityTransaction.begin();
         Member foundMember = entityManager.find(Member.class, 1L);
-        System.out.println("getMemberId = " + foundMember.getMemberId());
-        System.out.println("getEmail = " + foundMember.getEmail());
+        foundMember.setEmail("hgd@yahoo.co.kr");
+        entityTransaction.commit();
+    }
+
+    private void testDelete() {
+        entityTransaction.begin();
+        Member member = new Member("hgd@gmail.com");
+        entityManager.persist(member);
+        entityTransaction.commit();
+
+        entityTransaction.begin();
+        Member foundMember = entityManager.find(Member.class, 1L);
+        entityManager.remove(foundMember);
+        entityTransaction.commit();
     }
 }
